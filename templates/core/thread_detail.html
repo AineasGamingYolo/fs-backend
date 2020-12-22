@@ -1,0 +1,27 @@
+{% extends "site/base.html" %}
+{% block content %}
+<article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ thread.author.profile.image.url }}">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="{#% url 'user-threads' thread.author.username %#}">{{ thread.author }}</a>
+            <small class="text-muted">{{ thread.date_posted|date:"Y m d P" }}</small>
+            {% if thread.author == user %}
+
+            <div>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'thread-update' thread.id %}">Update</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'thread-delete' thread.id %}">Delete</a>
+            </div>
+
+            {% endif %}
+        </div>
+        <h2 class="article-title">{{ thread.title }}</h2>
+        <p class="article-content">{{ thread.content }}</p>
+    </div>
+</article>
+<form method="post" style="margin-top: 1.3em;">
+          {{ comment_form.as_p }}
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+        </form>
+{% endblock content %}

@@ -1,0 +1,57 @@
+{% block content %}
+<!--<h1 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
+<br> -->
+
+<!-- JSON Format: <br> -->
+{% for thread in threads %}
+{% if page_obj.paginator.count == 1 %}
+{ <br>
+       "author_profile_image_url": "{{ post.author.profile.image.url }}", <br>
+       "user_threads_url": "{#% url 'user-threads' thread.author.username %#}", <br>
+       "author": "{{ thread.author }}", <br>
+       "date_posted": "{{ thread.date_posted|date:"F d, Y" }}", <br>
+       "thread_detail_url": "{% url 'thread-detail' thread.id %}", <br>
+       "thread_title": "{{ thread.title }}", <br>
+       "thread_content": "{{ thread.content }}", <br>
+       "show_in_home": "{{ thread.show_in_home }}" <br>
+} <br>
+
+{% endif %}
+
+{% empty %}
+
+{ <br>
+    "error": "no_threads" <br>
+}
+
+{% endfor %}
+
+
+[
+{% for thread in threads %}
+{% if page_obj.paginator.count > 1 %}
+ <br>
+{ <br>
+       "author_profile_image_url": "{{ post.author.profile.image.url }}", <br>
+       "user_threads_url": "{#% url 'user-threads' thread.author.username %#}", <br>
+       "author": "{{ thread.author }}", <br>
+       "date_posted": "{{ thread.date_posted|date:"F d, Y" }}", <br>
+       "thread_detail_url": "{% url 'thread-detail' thread.id %}", <br>
+       "thread_title": "{{ thread.title }}", <br>
+       "thread_content": "{{ thread.content }}", <br>
+       "show_in_home": "{{ thread.show_in_home }}" <br>
+},
+
+{% endif %}
+
+
+{% empty %}
+{ <br>
+    "error": "no_threads" <br>
+}
+
+
+{% endfor %}
+<br> ]
+
+{% endblock content %}
