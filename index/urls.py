@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from graphene_django.views import GraphQLView
 from index.schema import schema
-from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import ObtainJSONWebToken #obtain_jwt_token
+
+from core.api.serializers import CustomJWTSerializer
 
 # Don't change anything unless you know what you're doing or have read the documentation and it says so
 
@@ -26,6 +28,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('graphql/', GraphQLView.as_view(graphiql=True)),
-    path('token-auth/', obtain_jwt_token),
+    path('token-auth/', ObtainJSONWebToken.as_view(serializer_class=CustomJWTSerializer)),
     path('api/', include('core.api.urls'))
 ]

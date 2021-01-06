@@ -1,12 +1,15 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from rest_framework import authentication
+from rest_framework import exceptions
 
-class EmailOrUsernameModelBackend(object):
+class EmailOrUsernameModelBackend(authentication.BaseAuthentication):
     """
     This is a ModelBacked that allows authentication with either a username or an email address.
 
     """
-    def authenticate(self, username=None, password=None):
+    def authenticate(self, request):
+        username = request.META.get('HTTP_X_USERNAME')
         if '@' in username:
             kwargs = {'email': username}
         else:
@@ -16,10 +19,10 @@ class EmailOrUsernameModelBackend(object):
             if user.check_password(password):
                 return user
         except User.DoesNotExist:
-            return None
+            raise exceptions.AuthenticationFailed('No such user')
 
     def get_user(self, username):
         try:
             return get_user_model().objects.get(pk=username)
         except get_user_model().DoesNotExist:
-            return None
+            raise exceptions.AuthenticationFailed('No such user')

@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
     # Personal Info
     first_name = models.CharField(blank=True, max_length=100)
     last_name = models.CharField(blank=True, max_length=100)
-    country = CountryField()
+    #country = CountryField()
 
     objects = UserManager()
 
